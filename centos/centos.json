@@ -2,19 +2,31 @@
   "variables": {
     "template": "centos",
 
+    "debug": "true",
+
     "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
     "aws_region": "eu-west-2",
     "aws_instance_type": "t2.micro",
 
-    "ami_disk_size": "1",
+    "ami_disk_size": "2",
     "ami_disk_type": "gp2",
 
     "ssh_username": "coadmin",
     "ssh_private_key": "/Users/dan/.ssh/id_rsa",
     "ssh_timeout": "15m",
 
-    "shutdown_behavior": "stop"
+    "shutdown_behavior": "stop",
+
+    "admin_create": "true",
+    "admin_user": "coadmin",
+    "admin_group": "coadmin",
+    "admin_uid": "1000",
+    "admin_gid": "1000",
+    "admin_groups": "wheel",
+    "admin_shell": "/bin/bash",
+    "admin_gecos": "CentOS Administrator",
+    "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV14up9OBdbyUPuuSCUOnSyTZOTx4i13nyIASlkQpLs7zKUIJL8Sni7BASmN3LFi9+BsiuBxC3RkVj84H6fe+mKqC6zpdFtWE2dN7U0bOXGVnDPOSXcW7B52NRP+sL7ShTcpDBsLUq0N4Hc64XSTOAbfOiQY9OUPSiW5nUQSuPHm9K1G0w//dImqyiikBWvBWJag2phaZDbeOz7nHcOdZnLhv0uWZBq/YRSdo0Jyn3yg/lG07PaWslPPw2s4eG7i/eWNbkWUshvRGdzU+pf5NCQl4iCetuaXlPUpIFZzjTgPE5IE+gXCue7Bg08ZAz25lk3g8B3TYlhfCkVm/8nQAGuYnTLMfxwacPJIXDTd/mD7efyNOOpz8nmylZoaiFBVrQWdmlVopqIMXArK+/NE4Md58ErUKPQY0Z/J/rFANN4JRFVU2XcC/0wl+uTvPxigspLpozp4mmjG/JCUhTNbihK/ICd4G87Xl+SAGoCEfly3NQcXpLgRUJou255Gj+CkRT2cOeCoNDhLlDLJ7d/twB0LzVfgQAGMCMWButudiCaX6NOSDhUAcHIKoNxQN28cO1xKGrEKxlw0iR2XWUftowxjfvifRYlbHAtrw6UXofNiZWfl8fPpHKPvbEgB83kK3OMWMP1cUAksMCUJdD8hCMPFxLS9Kj6cSz9Xlq/CSKyQ== JustSomeFooKey"
   },
 
   "builders": [
@@ -68,6 +80,40 @@
         "PackerBuildType": "{{build_type}}",
         "PackerVersion": "{{packer_version}}"
       }
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "ADMIN_CREATE={{user `admin_create`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "scripts/00-configure-build-disk.sh",
+        "scripts/01-prepare-centos-chroot-environment.sh",
+        "scripts/02-install-system-packages.sh",
+        "scripts/03-bootloader.sh",
+        "scripts/04-set-systemd-runlevel.sh",
+        "scripts/05-ec2-getty-fixes.sh",
+        "scripts/06-configure-networking.sh",
+        "scripts/07-create-fstab.sh",
+        "scripts/08-system-settings.sh",
+        "scripts/09-create-admin-user.sh",
+        "scripts/10-cleanup.sh",
+        "scripts/11-selinux-labelling.sh",
+        "scripts/12-unmount-target-filesystems.sh"
+      ]
     }
   ]
 }
