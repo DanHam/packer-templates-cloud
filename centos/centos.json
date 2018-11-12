@@ -106,13 +106,14 @@
         "scripts/03-bootloader.sh",
         "scripts/04-set-systemd-runlevel.sh",
         "scripts/05-ec2-getty-fixes.sh",
-        "scripts/06-configure-networking.sh",
-        "scripts/07-create-fstab.sh",
-        "scripts/08-system-settings.sh",
-        "scripts/09-create-admin-user.sh",
-        "scripts/10-cleanup.sh",
-        "scripts/11-selinux-labelling.sh",
-        "scripts/12-unmount-target-filesystems.sh"
+        "scripts/06-ec2-piix4-smbus-fix.sh",
+        "scripts/07-configure-networking.sh",
+        "scripts/08-create-fstab.sh",
+        "scripts/09-system-settings.sh",
+        "scripts/11-create-admin-user.sh",
+        "scripts/12-cleanup.sh",
+        "scripts/13-selinux-labelling.sh",
+        "scripts/14-unmount-target-filesystems.sh"
       ]
     }
   ]
