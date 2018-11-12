@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Clean and prepare target volume prior to AMI creation
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"

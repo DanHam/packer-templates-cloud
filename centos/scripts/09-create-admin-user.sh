@@ -4,6 +4,7 @@
 # configuration file and injected into the build environment as environment
 # variables. Note that we do not set a password and as such password based
 # authentication is disabled.
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

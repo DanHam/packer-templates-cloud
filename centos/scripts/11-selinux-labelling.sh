@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Ensure all files have the correct SELinux contexts
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"

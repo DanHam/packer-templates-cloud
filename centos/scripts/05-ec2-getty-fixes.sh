@@ -2,6 +2,7 @@
 #
 # ec2 instances do not allow login via the console so we do not need to
 # auto-spawn any gettys
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"

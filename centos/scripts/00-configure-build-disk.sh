@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 #
 # Partition the build disk, create filesystems, and mount them.
-
+#
 # The script assumes the file systems supporting the running system are all
 # located on the same disk as the rootfs. It also assumes the build disk is
 # the only other disk attached to the system.
 # If the build disk has existing partitions the script takes no action and
 # exits
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
