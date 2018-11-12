@@ -9,14 +9,22 @@ set -o errexit
 # Logging for packer
 echo "Ensure all files have the correct SELinux contexts..."
 
-# The SELinux script used to correct the SELinux contexts assumes a tty.
-# Since this run under a chroot there isn't one so we need a temp fix.
-sed -i '/^logit () {$/a LOGFILE="/dev/null"' /target/sbin/fixfiles
+# The section of the fixfiles script that deals with /tmp makes use of
+# commands that can only be used when the system (and SELinux) is up and
+# running and therefore errors.
+# However, we remove all files from /tmp and /var/tmp as part of the build.
+# As such we don't need to relabel /tmp and can avoid the errors by
+# commenting out this section in entirety
+begin='echo \"Cleaning up labels on \/tmp\"'
+end='\[ ! -e \/var\/lib\/debug \]'
+sed -i "/^${begin}/,/^${end}/{s/^/#/g}" /target/sbin/fixfiles
 
 # Relabel the filesystem
-chroot /target fixfiles restore > ${redirect} 2>&1
+# We must specify a logfile (-l) here or the fixfile script errors. This
+# is because there is no tty in the chroot.
+chroot /target fixfiles -l /dev/null restore > ${redirect} 2>&1
 
-# Undo the temp fix
-sed -i '/^logit () {$/{n;d}' /target/sbin/fixfiles
+# Restore the commented out section of the fixfiles script
+sed -i "/^#${begin}/,/^#${end}/{s/^#//g}" /target/sbin/fixfiles
 
 exit 0
