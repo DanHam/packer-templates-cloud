@@ -20,6 +20,8 @@ rm -rf /target/var/tmp/*
 
 # Remove log files
 find /target/var/log -type f | xargs -I FILE rm -f FILE > ${redirect} 2>&1
+# ...but recreate 'lastlog' otherwise we get errors about it being absent
+touch /target/var/log/lastlog
 
 # Bash history
 roots_hist="$(find /target/root -type f -name .bash_history)"
