@@ -12,7 +12,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
+[ "$DEBUG" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Logging for packer
 echo "Blacklisting i2c_piix4 kernel module to avoid erroneous boot messages..."

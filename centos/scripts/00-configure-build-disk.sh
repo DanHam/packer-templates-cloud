@@ -10,7 +10,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
+[ "$DEBUG" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Logging for packer
 echo "Partitioning, creating filesystems, and mounting the build disk..."
@@ -75,7 +75,7 @@ mkfs.xfs -f -L "ROOT" ${rootpart} > ${redirect} 2>&1
 
 # Mount the build disk
 echo "Mounting build disk partitions under /target..." > ${redirect}
-[[ ! -e /target ]] && mkdir /target
+[ ! -e /target ] && mkdir /target
 mount ${rootpart} /target
 mkdir /target/boot
 mount ${bootpart} /target/boot
