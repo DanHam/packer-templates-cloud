@@ -29,9 +29,10 @@ target_device="/dev/$(lsblk --list --output PKNAME,TYPE,MOUNTPOINT | \
                       grep /target$ | \
                       tr -s '[[:blank:]]' ' ' | \
                       cut -d' ' -f1)"
-# Install the bootloader
+
+echo "Installing the bootloader to ${target_device}" >${redirect}
 chroot /target grub2-install ${target_device} >${redirect} 2>&1
-# Write out the Grub configuration file
+echo "Creating the grub configuration file" >${redirect}
 chroot /target grub2-mkconfig -o /boot/grub2/grub.cfg >${redirect} 2>&1
 
 exit 0

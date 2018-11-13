@@ -7,7 +7,7 @@ set -o errexit
 [[ "$DEBUG" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Logging for packer
-echo "Ensure all files have the correct SELinux contexts..."
+echo "Ensuring all files have the correct SELinux contexts..."
 
 # The section of the fixfiles script that deals with /tmp makes use of
 # commands that can only be used when the system (and SELinux) is up and

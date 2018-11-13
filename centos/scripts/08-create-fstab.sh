@@ -16,11 +16,23 @@ target_root_uuid="$(lsblk --list --output NAME,TYPE,UUID,MOUNTPOINT | \
                     tr -s '[[:blank:]]' ' ' | \
                     cut -d' ' -f3)"
 
+if [ "x${target_root_uuid}" == "x" ]; then
+    echo "ERROR: Failed to determine UUID for root device"
+    exit 1
+fi
+echo "Root UUID: ${target_root_uuid}" >${redirect}
+
 target_boot_uuid="$(lsblk --list --output NAME,TYPE,UUID,MOUNTPOINT | \
                     grep part | \
                     grep /target/boot$ | \
                     tr -s '[[:blank:]]' ' ' | \
                     cut -d' ' -f3)"
+
+if [ "x${target_boot_uuid}" == "x" ]; then
+    echo "ERROR: Failed to determine UUID for boot device"
+    exit 1
+fi
+echo "Boot UUID: ${target_boot_uuid}" >${redirect}
 
 cat > /target/etc/fstab <<EOF
 # /etc/fstab

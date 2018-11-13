@@ -7,24 +7,22 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Exit unless user creation was requested in the packer template
-if [ "${ADMIN_CREATE}" = true ]; then
-    echo "Creating an admin user and setting up required options..."
-else
-    echo "Skipping creation of an admin user as requested..."
-    exit 0
-fi
+[[ "${ADMIN_CREATE}" = true ]] || exit 0
 
-echo "User:      ${ADMIN_USER}"               > ${REDIRECT}
-echo "Group:     ${ADMIN_GROUP}"              > ${REDIRECT}
-echo "UID:       ${ADMIN_UID}"                > ${REDIRECT}
-echo "GID:       ${ADMIN_GID}"                > ${REDIRECT}
-echo "Groups:    ${ADMIN_GROUPS}"             > ${REDIRECT}
-echo "Shell:     ${ADMIN_SHELL}"              > ${REDIRECT}
-echo "GECOS:     ${ADMIN_GECOS}"              > ${REDIRECT}
-echo "SSH key:   ${ADMIN_SSH_AUTHORISED_KEY}" > ${REDIRECT}
+# Logging for packer
+echo "Creating an admin user and setting up required options..."
+
+echo "User:      ${ADMIN_USER}"               > ${redirect}
+echo "Group:     ${ADMIN_GROUP}"              > ${redirect}
+echo "UID:       ${ADMIN_UID}"                > ${redirect}
+echo "GID:       ${ADMIN_GID}"                > ${redirect}
+echo "Groups:    ${ADMIN_GROUPS}"             > ${redirect}
+echo "Shell:     ${ADMIN_SHELL}"              > ${redirect}
+echo "GECOS:     ${ADMIN_GECOS}"              > ${redirect}
+echo "SSH key:   ${ADMIN_SSH_AUTHORISED_KEY}" > ${redirect}
 
 # Create the required group
 chroot /target groupadd --gid ${ADMIN_GID} ${ADMIN_GROUP}

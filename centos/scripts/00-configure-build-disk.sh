@@ -17,7 +17,8 @@ echo "Partitioning, creating filesystems, and mounting the build disk..."
 
 # Install required tools on the host system
 if [ "x$(rpm -qa | grep xfsprogs)" == "x" ]; then
-    echo "Installing required filesystem tools on the host system"
+    echo "Installing required filesystem tools on the host system" > \
+        ${redirect}
     yum install -y xfsprogs >${redirect} 2>&1
 fi
 
@@ -41,7 +42,7 @@ echo "Found device for chroot build: ${blddisk}" > ${redirect}
 
 # Ensure the build disk has no existing partitions
 if [ "x$(lsblk -l -o NAME,TYPE | grep ${blddisk} | grep part)" != "x" ]; then
-    echo "Build disk ${blddisk} has existing partitions. Exiting"
+    echo "ERROR: Build disk ${blddisk} has existing partitions. Exiting"
     exit 2
 fi
 

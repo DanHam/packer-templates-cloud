@@ -17,7 +17,7 @@ fi
 
 # Sanity check
 if [ "x$(mount | grep /target)" = "x" ]; then
-    echo "No filesystem mounted on /target. Exiting."
+    echo "ERROR: No filesystem mounted on /target. Exiting."
     exit 2
 fi
 
