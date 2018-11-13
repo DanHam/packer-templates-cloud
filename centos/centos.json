@@ -115,6 +115,7 @@
         "scripts/09-system-settings.sh",
         "scripts/10-install-ec2-cloud-packages.sh",
         "scripts/11-create-admin-user.sh",
+        "scripts/12-root-account.sh",
         "scripts/13-cleanup-target.sh",
         "scripts/14-selinux-labelling.sh",
         "scripts/15-unmount-target-filesystems.sh"
