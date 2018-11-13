@@ -9,13 +9,13 @@ set -o errexit
 # Logging for packer
 echo "Configuring system settings..."
 
-# Configure tuned for virtual system
+echo "Configuring tuned profile for virtual system" >${redirect}
 echo "virtual-guest" > /target/etc/tuned/active_profile
 
-# Disable use of tmpfs for /tmp
-chroot /target systemctl mask tmp.mount > ${redirect} 2>&1
+echo "Disabling use of tmpfs for /tmp" >${redirect}
+chroot /target systemctl mask tmp.mount >${redirect} 2>&1
 
-# Kernel package settings
+echo "Configuring settings for kernel packages" >${redirect}
 cat > /target/etc/sysconfig/kernel <<EOF
 # Specify whether new-kernel-pkg should make new kernels the default
 UPDATEDEFAULT=yes
@@ -24,8 +24,7 @@ UPDATEDEFAULT=yes
 DEFAULTKERNEL=kernel
 EOF
 
-# Configure yum variable 'instance type markers' for cloud
+echo "Configuring yum variable 'instance type markers' for cloud" >${redirect}
 echo "genclo" > /target/etc/yum/vars/infra
-
 
 exit 0
