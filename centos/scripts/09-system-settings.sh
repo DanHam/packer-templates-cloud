@@ -27,4 +27,7 @@ EOF
 echo "Configuring yum variable 'instance type markers' for cloud" >${redirect}
 echo "genclo" > /target/etc/yum/vars/infra
 
+echo "Generating system authentication resource config files" >${redirect}
+chroot /target authconfig --updateall
+
 exit 0
