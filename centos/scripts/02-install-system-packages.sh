@@ -14,8 +14,8 @@ coreutils cronie curl deltarpm dhclient filesystem glibc grub2 hostname \
 hwdata initscripts iproute iprutils iptables iputils irqbalance kbd \
 kernel less lshw lsof man-db ncurses openssh-clients openssh-server \
 openssl parted passwd policycoreutils policycoreutils-restorecond \
-procps-ng rootfiles rpmrsyslog selinux-policy-targeted setup shadow-utils \
-sudo systemd tar tuned util-linux vim-minimal xfsprogs yum"
+procps-ng rootfiles rpm rsyslog selinux-policy-targeted setup shadow-utils \
+sudo systemd tar tree tuned util-linux vim-minimal xfsprogs yum"
 
 chroot /target yum install -y ${packages} >${redirect} 2>&1
 
