@@ -16,7 +16,7 @@ set -o errexit
 echo "Partitioning, creating filesystems, and mounting the build disk..."
 
 # Install required tools on the host system
-if [ "x$(rpm -qa | grep xfsprogs)" == "x" ]; then
+if ! rpm -q xfsprogs >/dev/null; then
     echo "Installing required filesystem tools on the host system" > \
         ${redirect}
     yum install -y xfsprogs >${redirect} 2>&1

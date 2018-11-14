@@ -10,7 +10,7 @@ set -o errexit
 echo "Preparing the chroot environment for use..."
 
 # Ensure repoquery is installed (part of yum-utils)
-if [ "x$(rpm -qa | grep yum-utils)" = "x" ]; then
+if ! rpm -q yum-utils >/dev/null; then
     echo "Installing yum-utils as it is required by this script" >${redirect}
     yum install -y yum-utils >${redirect} 2>&1
 fi
