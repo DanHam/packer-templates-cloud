@@ -113,6 +113,7 @@
         "scripts/07-configure-networking.sh",
         "scripts/08-create-fstab.sh",
         "scripts/09-system-settings.sh",
+        "scripts/10-network-time.sh",
         "scripts/11-install-ec2-cloud-packages.sh",
         "scripts/12-create-admin-user.sh",
         "scripts/13-root-account.sh",
