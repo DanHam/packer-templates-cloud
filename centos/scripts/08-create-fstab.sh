@@ -37,9 +37,9 @@ echo "Boot UUID: ${target_boot_uuid}" >${redirect}
 cat > /target/etc/fstab <<EOF
 # /etc/fstab
 #
-# Device                                   Mountpoint  FS type  FS opts   Dump/Check
-UUID=${target_boot_uuid}  /boot       xfs      defaults  0 0
-UUID=${target_root_uuid}  /           xfs      defaults  0 0
+# File system                              Mountpoint  FS type  FS opts   Dump Check
+UUID=${target_boot_uuid}  /boot       xfs      defaults  0    0
+UUID=${target_root_uuid}  /           xfs      defaults  0    0
 EOF
 
 exit 0
