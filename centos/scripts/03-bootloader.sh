@@ -17,7 +17,7 @@ GRUB_DEFAULT=saved
 GRUB_DISABLE_SUBMENU=true
 GRUB_TERMINAL="serial console"
 GRUB_SERIAL_COMMAND="serial --speed=115200"
-GRUB_CMDLINE_LINUX="console=tty0 crashkernel=auto console=ttyS0,115200"
+GRUB_CMDLINE_LINUX="elevator=noop console=tty0 crashkernel=auto console=ttyS0,115200"
 GRUB_DISABLE_RECOVERY="true"
 EOF
 
