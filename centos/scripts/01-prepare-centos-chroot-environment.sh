@@ -9,12 +9,6 @@ set -o errexit
 # Logging for packer
 echo "Preparing the chroot environment for use..."
 
-# Ensure repoquery is installed (part of yum-utils)
-if ! rpm -q yum-utils >/dev/null; then
-    echo "Installing yum-utils as it is required by this script" >${redirect}
-    yum install -y yum-utils >${redirect} 2>&1
-fi
-
 # Sanity check
 if ! mount | grep /target >/dev/null; then
     echo "ERROR: No filesystem mounted on /target. Exiting."
