@@ -16,9 +16,9 @@ if ! rpm -q yum-utils >/dev/null; then
 fi
 
 # Sanity check
-if [ "x$(mount | grep /target)" = "x" ]; then
+if ! mount | grep /target >/dev/null; then
     echo "ERROR: No filesystem mounted on /target. Exiting."
-    exit 2
+    exit 1
 fi
 
 # Install core CentOS files and package manager into the chroot target
