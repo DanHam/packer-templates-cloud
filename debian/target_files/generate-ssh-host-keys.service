@@ -1,0 +1,13 @@
+[Unit]
+Description=Generate ssh host keys as required
+Before=network-pre.target
+Requires=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash /usr/local/sbin/generate-ssh-host-keys.sh
+ExecStop=/bin/true
+
+[Install]
+WantedBy=multi-user.target
