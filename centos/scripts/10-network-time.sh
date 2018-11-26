@@ -31,6 +31,11 @@ ed /target/${conf} &>/dev/null<<-EOF
 server 169.254.169.123 prefer iburst
 
 .
+\$a
+
+# Disable use of this machine as a time server
+deny all
+.
 wq
 EOF
 
@@ -50,15 +55,11 @@ sed -i "s/^\(rtconutc\)/#\1/" /target/${conf}
 # Disable copying of system time to the RTC
 sed -i "s/^\(rtcsync\)/#\1/" /target/${conf}
 
-# Disable logging of measurements, statistics, tracking etc
-sed -i "s/^\(log.* \)/#\1/" /target/${conf}
+# Disable logging of measurements, statistics, tracking etc but preserve
+# any configured setting for the logdir directive
+sed -i "/^log[^dir]/ s/^\(log.* \)/#\1/" /target/${conf}
 
 # Virtual instances should never be used as a reliable time source
 sed -i "s/^\(allow\)/#\1/" /target/${conf}
-cat >> /target/${conf} <<EOF
-
-# Disable use of this machine as a time server
-deny all
-EOF
 
 exit 0
