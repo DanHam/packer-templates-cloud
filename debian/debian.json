@@ -137,6 +137,7 @@
         "scripts/06-configure-apt-sources.sh",
         "scripts/07-configure-locales.sh",
         "scripts/08-disable-consistent-net-device-naming.sh",
+        "scripts/09-ec2-piix4-smbus-fix.sh",
         "scripts/10-configure-network-interfaces.sh",
         "scripts/11-ssh-hostkeys.sh",
         "scripts/12-network-time.sh",
