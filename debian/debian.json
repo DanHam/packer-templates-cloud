@@ -21,7 +21,7 @@
     "target_files_dir": "/packer-files",
 
     "apt_mirror": "http://cdn-aws.deb.debian.org",
-    "locales": "en_GB.UTF-8",
+    "locales": "en_GB.UTF-8 en_US.UTF-8",
     "num_ifaces": "1",
 
     "admin_create": "false",
