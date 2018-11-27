@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Install packages of benefit when running as a cloud instance
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
@@ -13,10 +14,10 @@
 echo "Installing cloud packages for EC2..."
 
 # Install cloud-init and associated utils
-export DEBIAN_FRONTEND=noninteractive
-packages="cloud-init cloud-guest-utils"
+packages="policykit-1 cloud-init cloud-guest-utils"
 chroot /target apt-get update >${redirect} 2>&1
-chroot /target apt-get --no-install-recommends -y install ${packages} \
+DEBIAN_FRONTEND="noninteractive" chroot /target \
+    apt-get --no-install-recommends -y install ${packages} \
     >${redirect} 2>&1
 
 # Configure cloud-init
@@ -35,4 +36,4 @@ sed -i "/disable-ec2-metadata/ d" /target/${cloud_conf}
 echo "Disabling all cloud-init datasources except EC2" >${redirect}
 sed -i "/^datasource_list:/ s/\[.*\]/\[ Ec2 \]/g" /target/${cloud_datasrc}
 
-exit 1
+exit 0
