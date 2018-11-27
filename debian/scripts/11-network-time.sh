@@ -12,7 +12,7 @@ echo "Configuring network time..."
 # Ensure ed is installed on the local system
 if ! dpkg -s ed &>/dev/null; then
     echo "Installing ed on local system" >${redirect}
-    apt-get install -y ed >${redirect} 2>&1
+    DEBIAN_FRONTEND=noninteractive apt-get install -y ed >${redirect} 2>&1
 fi
 
 # Ensure chrony is installed into the chroot
