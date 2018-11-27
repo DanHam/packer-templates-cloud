@@ -19,7 +19,6 @@ echo "Blacklisting i2c_piix4 kernel module to avoid erroneous boot messages..."
 
 cat > /target/etc/modprobe.d/piix4_smbus-blacklist.conf <<EOF
 # Blacklist piix4_smbus to prevent erroneous warning on EC2 instance boot
-
 blacklist i2c_piix4
 EOF
 
