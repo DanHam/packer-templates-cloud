@@ -142,10 +142,10 @@
         "scripts/11-ssh-hostkeys.sh",
         "scripts/12-network-time.sh",
         "scripts/13-install-ec2-cloud-packages.sh",
-        "scripts/14-create-admin-user.sh",
-        "scripts/15-root-account.sh",
-        "scripts/16-cleanup-target.sh",
-        "scripts/17-unmount-target-filesystems.sh"
+        "scripts/15-create-admin-user.sh",
+        "scripts/16-root-account.sh",
+        "scripts/17-cleanup-target.sh",
+        "scripts/18-unmount-target-filesystems.sh"
       ]
     }
   ]
