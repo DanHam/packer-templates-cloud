@@ -28,6 +28,12 @@ echo "Configuring yum variable 'instance type markers' for cloud" >${redirect}
 echo "genclo" > /target/etc/yum/vars/infra
 
 echo "Generating system authentication resource config files" >${redirect}
-chroot /target authconfig --updateall
+chroot /target authconfig --updateall >${redirect} 2>&1
+
+# Set the system locale to the value defined in the Packer template or, if
+# unset, use the default below
+: ${LOCALE:="en_GB.UTF-8"}
+echo "Setting the default system locale to ${LOCALE}" >${redirect}
+echo "LANG=${LOCALE}" > /target/etc/locale.conf
 
 exit 0

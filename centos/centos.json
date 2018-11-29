@@ -18,6 +18,8 @@
 
     "shutdown_behavior": "stop",
 
+    "locale": "en_GB.UTF-8",
+
     "admin_create": "false",
     "admin_user": "coadmin",
     "admin_group": "coadmin",
@@ -90,6 +92,7 @@
       "type": "shell",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
+        "LOCALE={{user `locale`}}",
         "ADMIN_CREATE={{user `admin_create`}}",
         "ADMIN_USER={{user `admin_user`}}",
         "ADMIN_GROUP={{user `admin_group`}}",
