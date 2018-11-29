@@ -47,6 +47,10 @@ cat > /target/${cloud_override} <<EOF
 apt_preserve_sources_list: true
 locale: ${def_locale}
 manage_etc_hosts: true
+ssh_genkeytypes:
+ - rsa
+ - ecdsa
+ - ed25519
 system_info:
   default_user:
     name: admin
