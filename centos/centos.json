@@ -118,6 +118,7 @@
         "scripts/09-system-settings.sh",
         "scripts/10-network-time.sh",
         "scripts/11-install-ec2-cloud-packages.sh",
+        "scripts/12-configure-ec2-cloud-packages.sh",
         "scripts/13-create-admin-user.sh",
         "scripts/14-root-account.sh",
         "scripts/15-cleanup-target.sh",
