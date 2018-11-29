@@ -54,13 +54,11 @@ ssh_genkeytypes:
 system_info:
   default_user:
     name: admin
+    groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video, systemd-journal]
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
-    lock_passwd: True
     gecos: Debian Administrator
-    groups: [adm, audio, cdrom, dialout, dip, floppy, netdev, plugdev, sudo, video, systemd-journal]
-    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
-    shell: /bin/bash
+    lock_passwd: True
 EOF
 
 exit 0
