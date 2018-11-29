@@ -14,6 +14,7 @@ echo "Configuring cloud packages for EC2..."
 
 # Configuration files for cloud-init
 cloud_conf="/etc/cloud/cloud.cfg"
+cloud_override="/etc/cloud/cloud.cfg.d/01_centos_cloud.cfg"
 cloud_confd="/etc/cloud/cloud.cfg.d"
 
 # By default the CentOS cloud-init package disables collection of EC2
@@ -28,6 +29,20 @@ echo "Disabling all cloud-init datasources except EC2" >${redirect}
 cat <<EOF >/target/${cloud_confd}/90_datasources.cfg
 # Configure data sources from which to pull metadata
 datasource_list: [ Ec2 ]
+EOF
+
+# Configure sensible settings/overrides for cloud-init
+echo "Setting sensible defaults and overrides for cloud-init" >${redirect}
+cat > /target/${cloud_override} <<EOF
+manage_etc_hosts: true
+system_info:
+  default_user:
+    name: admin
+    groups: wheel
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    gecos: CentOS Administrator
+    lock_passwd: true
 EOF
 
 exit 0
