@@ -32,8 +32,14 @@ datasource_list: [ Ec2 ]
 EOF
 
 # Configure sensible settings/overrides for cloud-init
+# By default cloud-init sets the default locale to en_US.UTF-8 on first
+# boot. The settings below will override this behaviour setting the system
+# locale to the value configured in the Packer template or to the default
+# defined below if unset
+: ${LOCALE:="en_GB.UTF-8"}
 echo "Setting sensible defaults and overrides for cloud-init" >${redirect}
 cat > /target/${cloud_override} <<EOF
+locale: ${LOCALE}
 manage_etc_hosts: true
 system_info:
   default_user:

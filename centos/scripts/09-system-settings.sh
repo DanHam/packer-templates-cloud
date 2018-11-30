@@ -31,7 +31,8 @@ echo "Generating system authentication resource config files" >${redirect}
 chroot /target authconfig --updateall >${redirect} 2>&1
 
 # Set the system locale to the value defined in the Packer template or, if
-# unset, use the default below
+# unset, use the default below. By default, cloud-init enabled instances
+# will overwrite this on first boot
 : ${LOCALE:="en_GB.UTF-8"}
 echo "Setting the default system locale to ${LOCALE}" >${redirect}
 echo "LANG=${LOCALE}" > /target/etc/locale.conf
