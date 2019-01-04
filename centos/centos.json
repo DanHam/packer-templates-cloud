@@ -78,6 +78,7 @@
       },
       "ami_description": "CentOS 7 base build: {{isotime \"2006-01-02 15:04:05\"}}",
       "ami_virtualization_type": "hvm",
+      "ena_support": true,
       "tags": {
         "Name": "CentOS 7 Base HVM",
         "Created": "{{isotime \"2006-01-02 15:04:05\"}}",
