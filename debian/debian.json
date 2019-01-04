@@ -82,6 +82,7 @@
       },
       "ami_description": "Debian 9 base build: {{isotime \"2006-01-02 15:04:05\"}}",
       "ami_virtualization_type": "hvm",
+      "ena_support": true,
       "tags": {
         "Name": "Debian 9 Base HVM",
         "Created": "{{isotime \"2006-01-02 15:04:05\"}}",
