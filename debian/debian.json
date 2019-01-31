@@ -133,6 +133,8 @@
         "scripts/01-bootstrap-target-and-prepare-chroot.sh",
         "scripts/02-remove-extraneous-packages.sh",
         "scripts/03-configure-apt-sources.sh",
+        "scripts/04-install-updates.sh",
+        "scripts/05-remove-superseded-kernels.sh",
         "scripts/06-bootloader.sh",
         "scripts/07-create-fstab.sh",
         "scripts/08-kernel-modules.sh",
