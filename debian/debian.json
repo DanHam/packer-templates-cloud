@@ -9,7 +9,7 @@
     "aws_region": "eu-west-2",
     "aws_instance_type": "t2.micro",
 
-    "ami_disk_size": "1",
+    "ami_disk_size": "2",
     "ami_disk_type": "gp2",
 
     "ssh_username": "debadmin",
