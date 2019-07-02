@@ -24,20 +24,25 @@ fi
 # Configure chrony
 conf="/etc/chrony.conf"
 
-# Use the Amazon Time Sync service as the preferred time source
-ed /target/${conf} &>/dev/null<<-EOF
-1i
-# Use the Amazon Time Sync Service if available
-server 169.254.169.123 prefer iburst
-
-.
-\$a
-
-# Disable use of this machine as a time server
-deny all
-.
-wq
-EOF
+# Step the clock whenever the offset is greater than 1 second
+#
+# Delete any existing 'makestep' directive including any comments before it
+# and the preceding blank line
+sed -i -n '
+/^$/ b block
+H
+$ b block
+b
+:block
+x
+/makestep/!p' /target/${conf}
+# The above command may leave a blank line at the head of the file
+sed -i "/^[[:space:]]*$/{1d}" /target/${conf}
+# Add the required directive and comment
+printf '%s' '
+# Step the clock whenever the offset is larger than 1 second
+makestep 1.0 -1
+' >>/target/${conf}
 
 # With virtual or cloud based instances interaction with a RTC is not
 # desirable and can cause issues
@@ -61,5 +66,20 @@ sed -i "/^log[^dir]/ s/^\(log.* \)/#\1/" /target/${conf}
 
 # Virtual instances should never be used as a reliable time source
 sed -i "s/^\(allow\)/#\1/" /target/${conf}
+
+# Use the Amazon Time Sync service as the preferred time source
+ed /target/${conf} &>/dev/null<<-EOF
+1i
+# Use the Amazon Time Sync Service if available
+server 169.254.169.123 prefer iburst
+
+.
+\$a
+
+# Disable use of this machine as a time server
+deny all
+.
+wq
+EOF
 
 exit 0
