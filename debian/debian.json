@@ -21,6 +21,7 @@
     "target_files_dir": "/packer-files",
 
     "apt_mirror": "http://cdn-aws.deb.debian.org",
+    "debootstrap_codename": "stretch",
     "locales": "en_GB.UTF-8 en_US.UTF-8",
     "num_ifaces": "1",
 
@@ -114,6 +115,7 @@
         "DEBUG={{user `debug`}}",
         "TARGET_FILES_DIR={{user `target_files_dir`}}",
         "APT_MIRROR={{user `apt_mirror`}}",
+        "DEBOOTSTRAP_CODENAME={{user `debootstrap_codename`}}",
         "LOCALES={{user `locales`}}",
         "NUM_IFACES={{user `num_ifaces`}}",
         "ADMIN_CREATE={{user `admin_create`}}",

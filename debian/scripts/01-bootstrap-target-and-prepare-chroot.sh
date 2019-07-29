@@ -9,6 +9,14 @@ set -o errexit
 # Logging for packer
 echo "Installing base packages into target filesystem..."
 
+# The Debian codename should be set in the Packer template and passed to
+# the script as an environment variable
+if [ "x${DEBOOTSTRAP_CODENAME}" = "x" ]; then
+    echo "Error: debootstrap requires the Debian codename to be set via" \
+        "the Packer template. Please set a value for debootstrap_codename"
+    exit 1
+fi
+
 # Ensure debootstrap is installed
 if ! dpkg -s debootstrap &>/dev/null; then
     echo "Installing debootstrap to local system" >${redirect}
@@ -28,8 +36,9 @@ packages+="grub-pc,irqbalance,libpam-systemd,linux-image-amd64,less," \
 packages+="locales,lsb-release,manpages,man-db,net-tools,openssh-server," \
 packages+="openssl,psmisc,python-minimal,sudo,tree,uuid-runtime,xz-utils"
 
-echo "Bootstrapping the build target with debootstrap" >${redirect}
-debootstrap --include=${packages} stretch /target \
+echo "Bootstrapping Debian ${DEBOOTSTRAP_CODENAME} into the build target" \
+    "with debootstrap" >${redirect}
+debootstrap --include=${packages} ${DEBOOTSTRAP_CODENAME} /target \
     http://httpredir.debian.org/debian >$redirect 2>&1
 
 # Prepare the chroot environment
