@@ -1,6 +1,6 @@
 {
   "variables": {
-    "template": "centos",
+    "template": "CentOS 7 Base HVM",
 
     "debug": "true",
 
@@ -57,10 +57,10 @@
         }
       ],
       "run_tags": {
-        "Name": "Packer CentOS Build Instance"
+        "Name": "Packer: Build Instance for '{{user `template`}}'"
       },
       "run_volume_tags": {
-        "Name": "Packer CentOS Build Instance"
+        "Name": "Packer: Build Instance for '{{user `template`}}'"
       },
       "shutdown_behavior": "{{user `shutdown_behavior`}}",
       "ssh_username": "{{user `ssh_username`}}",
@@ -68,7 +68,7 @@
       "ssh_timeout": "{{user `ssh_timeout`}}",
       "user_data_file": "userdata.yml",
 
-      "ami_name": "CentOS 7 Base HVM {{isotime \"2006-01-02\"}}",
+      "ami_name": "{{user `template`}} {{isotime \"2006-01-02\"}}",
       "ami_root_device": {
         "delete_on_termination": true,
         "device_name": "/dev/xvda",
@@ -76,11 +76,11 @@
         "volume_size": "{{user `ami_disk_size`}}",
         "volume_type": "{{user `ami_disk_type`}}"
       },
-      "ami_description": "CentOS 7 base build: {{isotime \"2006-01-02 15:04:05\"}}",
+      "ami_description": "{{user `template`}} build: {{isotime \"2006-01-02 15:04:05\"}}",
       "ami_virtualization_type": "hvm",
       "ena_support": true,
       "tags": {
-        "Name": "CentOS 7 Base HVM",
+        "Name": "{{ user `template`}}",
         "Created": "{{isotime \"2006-01-02 15:04:05\"}}",
         "PackerBuildType": "{{build_type}}",
         "PackerVersion": "{{packer_version}}"
