@@ -15,7 +15,15 @@ echo "Configuring cloud packages for EC2..."
 # Configuration files for cloud-init
 cloud_conf="/etc/cloud/cloud.cfg"
 cloud_override="/etc/cloud/cloud.cfg.d/01_debian_cloud.cfg"
-cloud_datasrc="/etc/cloud/cloud.cfg.d/90_dpkg.cfg"
+# Debian 9 (and earler) allows configuration of cloud-init datasources via
+# dpkg-reconfigure which outputs the requirements to 90_dpkg.cfg under the
+# /etc/cloud/cloud.cfg.d directory. This appears to have been deprecated in
+# Debian 10 so the configuration file needs to be set accordingly
+if [ -e /etc/cloud/cloud.cfg.d/90_dpkg.cfg ]; then
+    cloud_datasrc="/etc/cloud/cloud.cfg.d/90_dpkg.cfg"        # <= Debian 9
+else
+    cloud_datasrc="/etc/cloud/cloud.cfg.d/90_datasources.cfg" # Debian 10
+fi
 
 # By default the Debian cloud-init package disables collection of EC2
 # metadata. Since the target cloud platform is Amazons EC2 we want to
@@ -26,8 +34,15 @@ sed -i "/disable-ec2-metadata/ d" /target/${cloud_conf}
 
 # Since the target platform is Amazons EC2 we can speed up processing by
 # only running the cloud-init code for the Amazon EC2 datasource
-echo "Disabling all cloud-init datasources except EC2" >${redirect}
-sed -i "/^datasource_list:/ s/\[.*\]/\[ Ec2 \]/g" /target/${cloud_datasrc}
+echo "Configuring cloud-init datasources list" >${redirect}
+if [ -e /target/${cloud_datasrc} ]; then
+    # Datasources are configured with dpkg-reconfigure on Debian 9 and earlier
+    # so update to suite our needs
+    sed -i "/^datasource_list:/ s/\[.*\]/\[ Ec2 \]/g" /target/${cloud_datasrc}
+else
+    # Datasources need to be configured manually for Debian 10
+    echo 'datasource_list: [ Ec2 ]' > /target/${cloud_datasrc}
+fi
 
 # Implement the same overrides and defaults for cloud-init as configured in
 # the official Debian cloud instances (plus some minor changes).
