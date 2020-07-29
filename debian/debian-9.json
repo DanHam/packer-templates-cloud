@@ -131,6 +131,7 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
+        "scripts/00-prepare-source-instance.sh",
         "scripts/01-configure-build-disk.sh",
         "scripts/02-bootstrap-target-and-prepare-chroot.sh",
         "scripts/03-remove-extraneous-packages.sh",
