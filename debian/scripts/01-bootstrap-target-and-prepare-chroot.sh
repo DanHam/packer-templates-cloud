@@ -20,6 +20,7 @@ fi
 # Ensure debootstrap is installed
 if ! dpkg -s debootstrap &>/dev/null; then
     echo "Installing debootstrap to local system" >${redirect}
+    apt-get update >${redirect} 2>&1
     DEBIAN_FRONTEND="noninteractive" apt-get install -y debootstrap \
         >${redirect} 2>&1
 fi

@@ -48,10 +48,10 @@
       "instance_type": "{{user `aws_instance_type`}}",
       "source_ami_filter": {
         "filters": {
-          "name": "debian-stretch-hvm-x86_64-gp2-*"
+          "name": "debian-10-amd64-*"
         },
         "most_recent": true,
-        "owners": "379101102735"
+        "owners": "136693071363"
       },
       "launch_block_device_mappings": [
         {
