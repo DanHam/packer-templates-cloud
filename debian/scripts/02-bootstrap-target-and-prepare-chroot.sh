@@ -30,13 +30,30 @@ if ! mount | grep /target >/dev/null; then
     exit 1
 fi
 
-# Set additional packages to install with debootstrap
-packages="bash-completion,busybox,bzip2,ca-certificates,chrony,dbus,file," \
-packages+="grub-pc,irqbalance,libpam-systemd,linux-image-amd64,less," \
-packages+="locales,lsb-release,manpages,man-db,net-tools,openssh-server," \
-packages+="openssl,psmisc,python-minimal,sudo,tree,uuid-runtime,xz-utils"
 
-echo "Bootstrapping Debian ${DEBOOTSTRAP_CODENAME} into the build target" \
+# Set the additional packages to install with debootstrap
+packages="bash-completion,busybox,bzip2,ca-certificates,chrony,dbus,file," \
+packages+="grub-pc,irqbalance,libpam-systemd,less,locales,lsb-release," \
+packages+="manpages,man-db,net-tools,openssh-server,openssl,psmisc," \
+packages+="python-minimal,sudo,tree,uuid-runtime,xz-utils,"
+# Set additional packages specific to the target version
+case "${DEBOOTSTRAP_CODENAME}" in
+    "stretch")
+        packages+="linux-image-amd64"
+        ;;
+    "buster")
+        packages+="linux-image-cloud-amd64"
+        ;;
+    *)
+        echo "Error: Unrecognised Debian code name: ${DEBOOTSTRAP_CODENAME^}"
+        exit 1
+        ;;
+esac
+echo "Set debootstrap additional packages for ${DEBOOTSTRAP_CODENAME^} to:" \
+    >${redirect}
+echo "${packages}" >${redirect}
+
+echo "Bootstrapping Debian ${DEBOOTSTRAP_CODENAME^} into the build target" \
     "with debootstrap" >${redirect}
 debootstrap --include=${packages} ${DEBOOTSTRAP_CODENAME} /target \
     http://httpredir.debian.org/debian >$redirect 2>&1
