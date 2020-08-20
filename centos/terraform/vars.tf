@@ -9,3 +9,9 @@ variable "aws_instance_type" {
   default     = "t2.micro"
   type        = string
 }
+
+variable "aws_instance_user_data_file" {
+  description = "Path to the Cloud Init user data file with which to instantiate the instance"
+  default     = "userdata.yaml"
+  type        = string
+}
