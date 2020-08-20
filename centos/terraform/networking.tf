@@ -1,6 +1,6 @@
 resource "aws_security_group" "linux" {
-  name        = "Terraform Default Linux"
-  description = "Rules for traffic to and from GNU/Linux based instances"
+  name        = "Terraform Default Linux CentOS"
+  description = "Rules for traffic to and from CentOS based instances"
 
   # Allow ssh
   ingress {
@@ -32,7 +32,7 @@ resource "aws_security_group" "linux" {
   tags = merge(
     local.common_tags,
     {
-      Name = "Terraform Default Linux"
+      Name = "Terraform Default Linux CentOS"
     }
   )
 }
