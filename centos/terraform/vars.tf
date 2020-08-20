@@ -15,3 +15,8 @@ variable "aws_instance_user_data_file" {
   default     = "userdata.yaml"
   type        = string
 }
+
+variable "local_ip_cidr" {
+  description = "CIDR block describing the IP address of the connecting workstation"
+  type        = string
+}
