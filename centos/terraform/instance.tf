@@ -14,10 +14,14 @@ resource "aws_instance" "centos7_test" {
   instance_type = var.aws_instance_type
   user_data     = filebase64(var.aws_instance_user_data_file)
 
-  volume_tags = local.common_tags
+  volume_tags = merge(
+    local.common_tags,
+    local.instance_tags
+  )
 
   tags = merge(
     local.common_tags,
+    local.instance_tags,
     {
       "BuiltBy" = "Packer"
     }
