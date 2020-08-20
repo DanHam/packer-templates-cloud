@@ -1,0 +1,7 @@
+# Ignore Terraform's working directory
+.terraform
+# Ignore local Terraform State files
+*.tfstate
+*.tfstate.backup
+# Prevent tracking of files that may contain sensitive data
+*.tfvars

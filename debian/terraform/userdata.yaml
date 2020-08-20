@@ -1,0 +1,26 @@
+#cloud-config
+
+# Create required groups
+groups:
+  - debadmin
+
+# Add users to the system. Users are added after groups are added.
+users:
+  - name: debadmin
+    gecos: Debian Administrator
+    primary-group: debadmin
+    groups: cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,systemd-journal
+    shell: /bin/bash
+    lock_passwd: true
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDUFiwhiVe/Rft21aPxQC7zx4vFKNGQXJ5FfWlzMraRmbPWf+5cQAOcRtRVmFahbPcf3BWBOObaAxJrhGfCyxIQ2pq/u1uYI//p+KypvcFCi/54WsHNLBthRRzDkTQIOQvzRWi+2H9TYc5jgzaqXwfWyZTB98909H7hAINQJTDNmNXtAO9/sQdojuCcTwdWBqEfF/VuU+PAAJw5QTiBoTx0f3vIpnUmZdfyz93xR04XG9Oxaa5Wfc+54hEKk6YQtimzBmETgmh4WLhJGKr5NL5QvLyB2N3suyvkddf+x+vWaOwOYglgbY32g51w/E/tFcVligEINJ/K3c7kE/lN6DjYlhIs9EtKIGAc9LTqTHVqE9+u4MP/9d2osn6Y+qxPFSPqGlHsv+18bSkjKUXq/lUmYMgAHgdPgUfwPx0fbHp5eCVZ9j/Sx562Cv8C6dHgnL1JiqkImCNdiyuJvyGr5gUpnjYDldhBRoypPBgXU353Jk7aXQyJDSwVoV/8zxAafZ0expBIiegDRAgvWHTrpkpDpY4mvlE067tzJsPduddK5Y1ga0vVOC6LFBnH9Ecc0u1FXdewkrprE4camFjdzTaXYGYl21YesmYFEZ9el/K35HlBlDiwCk2f1FIS75USVmEfBlTexR2iDM0NMgB/o75jfiL66bhj0Cpf2apdHWUNaQ== Terraform AWS - User Data SSH Key for testing
+
+# Debians cloud-init defaults to en_US.UTF-8
+locale: en_GB.UTF-8
+
+# Manage /etc/hosts using the /etc/cloud/templates/hosts.debian.tmpl
+manage_etc_hosts: template
+
+# Timezone
+timezone: Europe/London
