@@ -1,5 +1,5 @@
 locals {
   common_tags = {
-    "CreatedBy" = "Terraform"
+    "createdBy" = "terraform"
   }
 }

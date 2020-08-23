@@ -1,6 +1,6 @@
 locals {
   common_tags = {
-    "CreatedBy" = "Terraform"
+    "createdBy" = "terraform"
   }
   instance_tags = {
     "Name" = "Terraform Test: ${data.aws_ami.centos7_ami.name}"
