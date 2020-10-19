@@ -13,6 +13,6 @@ LANG=C.UTF-8 DEBIAN_FRONTEND="noninteractive" chroot /target \
         apt-get update >${redirect} 2>&1
 
 LANG=C.UTF-8 DEBIAN_FRONTEND="noninteractive" chroot /target \
-        apt-get --no-install-recommends -y upgrade >${redirect} 2>&1
+        apt-get --no-install-recommends -y dist-upgrade >${redirect} 2>&1
 
 exit 0
