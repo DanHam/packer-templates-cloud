@@ -13,7 +13,7 @@
     "ami_disk_type": "gp2",
 
     "ssh_username": "coadmin",
-    "ssh_private_key": "/Users/dan/.ssh/packer_rsa",
+    "ssh_private_key": "{{env `HOME`}}/.ssh/packer_rsa",
     "ssh_timeout": "15m",
 
     "shutdown_behavior": "stop",
