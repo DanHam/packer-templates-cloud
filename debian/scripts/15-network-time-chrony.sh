@@ -6,21 +6,18 @@ set -o errexit
 # Set verbose/quiet output based on env var configured in Packer template
 [ "$DEBUG" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
+# Exit if chrony is not installed on the target system
+if ! chroot /target dpkg -s chrony &>/dev/null; then
+    exit 0
+fi
+
 # Logging for packer
-echo "Configuring network time..."
+echo "Configuring network time (chrony)..."
 
 # Ensure ed is installed on the local system
 if ! dpkg -s ed &>/dev/null; then
     echo "Installing ed on local system" >${redirect}
     DEBIAN_FRONTEND=noninteractive apt-get install -y ed >${redirect} 2>&1
-fi
-
-# Ensure chrony is installed into the chroot
-if ! chroot /target dpkg -s chrony &>/dev/null; then
-    echo "Installing chrony" >${redirect}
-    chroot /target apt-get update >${redirect} 2>&1
-    chroot /target DEBIAN_FRONTEND=noninteractive \
-        apt-get --no-install-recommends install -y chrony >${redirect} 2>&1
 fi
 
 # Configure chrony
@@ -89,5 +86,8 @@ deny all
 .
 wq
 EOF
+
+# Ensure the systemd-timesyncd service is enabled
+chroot /target systemctl enable chrony.service > ${redirect} 2>&1
 
 exit 0
