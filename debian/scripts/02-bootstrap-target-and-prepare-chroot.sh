@@ -45,7 +45,7 @@ case "${DEBOOTSTRAP_CODENAME}" in
         packages+="chrony,linux-image-cloud-amd64"
         ;;
     "bullseye")
-        packages+="linux-image-cloud-amd64"
+        packages+="systemd-timesyncd,linux-image-cloud-amd64"
         ;;
     *)
         echo "Error: Unrecognised Debian code name: ${DEBOOTSTRAP_CODENAME^}"
