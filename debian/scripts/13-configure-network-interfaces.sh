@@ -18,6 +18,7 @@ cat > /target/etc/network/interfaces <<EOF
 #
 # Include files from /etc/network/interfaces.d:
 source-directory /etc/network/interfaces.d
+#
 # Set up the loopback interface
 auto lo
 iface lo inet loopback
@@ -29,6 +30,7 @@ EOF
 for i in $(seq 0 $((${NUM_IFACES}-1))) # Start at eth0...
 do
 	printf "%s" "\
+        #
         # Ethernet ${i}
         auto eth${i}
         iface eth${i} inet dhcp
