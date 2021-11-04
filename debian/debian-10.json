@@ -146,13 +146,14 @@
         "scripts/12-disable-consistent-net-device-naming.sh",
         "scripts/13-configure-network-interfaces.sh",
         "scripts/14-ssh-hostkeys.sh",
-        "scripts/15-network-time.sh",
-        "scripts/16-install-ec2-cloud-packages.sh",
-        "scripts/17-configure-ec2-cloud-packages.sh",
-        "scripts/18-create-admin-user.sh",
-        "scripts/19-root-account.sh",
-        "scripts/20-cleanup-target.sh",
-        "scripts/21-unmount-target-filesystems.sh"
+        "scripts/15-network-time-chrony.sh",
+        "scripts/16-network-time-systemd-timesyncd.sh",
+        "scripts/17-install-ec2-cloud-packages.sh",
+        "scripts/18-configure-ec2-cloud-packages.sh",
+        "scripts/19-create-admin-user.sh",
+        "scripts/20-root-account.sh",
+        "scripts/21-cleanup-target.sh",
+        "scripts/22-unmount-target-filesystems.sh"
       ]
     }
   ]
