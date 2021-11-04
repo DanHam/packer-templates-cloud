@@ -21,10 +21,24 @@ echo "Creating sources.list file for Debian ${codename}" >${redirect}
 # variables will be used in preference to the default below
 : ${APT_MIRROR:="http://httpredir.debian.org"}
 
+# The component portion of the security stanza changed for bullseye
+case "${codename}" in
+    "stretch"|"buster")
+        sec_component="${codename}/updates"
+        ;;
+    "bullseye")
+        sec_component="${codename}-security"
+        ;;
+    *)
+        echo "Error: Unrecognised Debian code name: ${codename}"
+        exit 1
+        ;;
+esac
+
 sources="/etc/apt/sources.list"
 cat > /target/${sources} << EOF
 deb ${APT_MIRROR}/debian ${codename} main contrib
-deb http://security.debian.org/debian-security ${codename}/updates main contrib
+deb http://security.debian.org/debian-security ${sec_component} main contrib
 deb ${APT_MIRROR}/debian ${codename}-updates main contrib
 EOF
 
