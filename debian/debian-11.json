@@ -1,0 +1,160 @@
+{
+  "variables": {
+    "template": "Debian 11 Base HVM",
+
+    "debug": "true",
+
+    "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
+    "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
+    "aws_region": "eu-west-2",
+    "aws_instance_type": "t2.micro",
+
+    "ami_disk_size": "2",
+    "ami_disk_type": "gp2",
+
+    "ssh_username": "debadmin",
+    "ssh_private_key": "{{env `HOME`}}/.ssh/packer_rsa",
+    "ssh_timeout": "15m",
+
+    "shutdown_behavior": "stop",
+
+    "target_files_dir": "/packer-files",
+
+    "apt_mirror": "http://cdn-aws.deb.debian.org",
+    "debootstrap_codename": "bullseye",
+    "locales": "en_GB.UTF-8 en_US.UTF-8",
+    "num_ifaces": "1",
+
+    "admin_create": "false",
+    "admin_user": "debadmin",
+    "admin_group": "debadmin",
+    "admin_uid": "1000",
+    "admin_gid": "1000",
+    "admin_groups": "cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,systemd-journal",
+    "admin_shell": "/bin/bash",
+    "admin_gecos": "Debian Administrator",
+    "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV14up9OBdbyUPuuSCUOnSyTZOTx4i13nyIASlkQpLs7zKUIJL8Sni7BASmN3LFi9+BsiuBxC3RkVj84H6fe+mKqC6zpdFtWE2dN7U0bOXGVnDPOSXcW7B52NRP+sL7ShTcpDBsLUq0N4Hc64XSTOAbfOiQY9OUPSiW5nUQSuPHm9K1G0w//dImqyiikBWvBWJag2phaZDbeOz7nHcOdZnLhv0uWZBq/YRSdo0Jyn3yg/lG07PaWslPPw2s4eG7i/eWNbkWUshvRGdzU+pf5NCQl4iCetuaXlPUpIFZzjTgPE5IE+gXCue7Bg08ZAz25lk3g8B3TYlhfCkVm/8nQAGuYnTLMfxwacPJIXDTd/mD7efyNOOpz8nmylZoaiFBVrQWdmlVopqIMXArK+/NE4Md58ErUKPQY0Z/J/rFANN4JRFVU2XcC/0wl+uTvPxigspLpozp4mmjG/JCUhTNbihK/ICd4G87Xl+SAGoCEfly3NQcXpLgRUJou255Gj+CkRT2cOeCoNDhLlDLJ7d/twB0LzVfgQAGMCMWButudiCaX6NOSDhUAcHIKoNxQN28cO1xKGrEKxlw0iR2XWUftowxjfvifRYlbHAtrw6UXofNiZWfl8fPpHKPvbEgB83kK3OMWMP1cUAksMCUJdD8hCMPFxLS9Kj6cSz9Xlq/CSKyQ== JustSomeFooKey",
+
+    "enable_cloud_init": "true"
+  },
+
+  "builders": [
+    {
+      "type": "amazon-ebssurrogate",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `aws_region`}}",
+
+      "instance_type": "{{user `aws_instance_type`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "debian-11-amd64-*"
+        },
+        "most_recent": true,
+        "owners": "136693071363"
+      },
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/xvdf",
+          "volume_size": "{{user `ami_disk_size`}}",
+          "volume_type": "{{user `ami_disk_type`}}"
+        }
+      ],
+      "run_tags": {
+        "Name": "Packer: Debian Build Instance for '{{user `template`}}'"
+      },
+      "run_volume_tags": {
+        "Name": "Packer: Debian Build Instance for '{{user `template`}}'"
+      },
+      "shutdown_behavior": "{{user `shutdown_behavior`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+      "ssh_timeout": "{{user `ssh_timeout`}}",
+      "user_data_file": "userdata.yml",
+
+      "ami_name": "{{user `template`}} {{isotime \"2006-01-02\"}}",
+      "ami_root_device": {
+        "delete_on_termination": true,
+        "device_name": "/dev/xvda",
+        "source_device_name": "/dev/xvdf",
+        "volume_size": "{{user `ami_disk_size`}}",
+        "volume_type": "{{user `ami_disk_type`}}"
+      },
+      "ami_description": "{{user `template`}} build: {{isotime \"2006-01-02 15:04:05\"}}",
+      "ami_virtualization_type": "hvm",
+      "ena_support": true,
+      "tags": {
+        "Name": "{{ user `template`}}",
+        "Created": "{{isotime \"2006-01-02 15:04:05\"}}",
+        "PackerBuildType": "{{build_type}}",
+        "PackerVersion": "{{packer_version}}"
+      }
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "environment_vars": [
+        "TARGET_FILES_DIR={{user `target_files_dir`}}"
+      ],
+      "inline": [
+        "mkdir --mode=777 $TARGET_FILES_DIR"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "target_files/",
+      "destination": "{{user `target_files_dir`}}"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "TARGET_FILES_DIR={{user `target_files_dir`}}",
+        "APT_MIRROR={{user `apt_mirror`}}",
+        "DEBOOTSTRAP_CODENAME={{user `debootstrap_codename`}}",
+        "LOCALES={{user `locales`}}",
+        "NUM_IFACES={{user `num_ifaces`}}",
+        "ADMIN_CREATE={{user `admin_create`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "ENABLE_CLOUD_INIT={{user `enable_cloud_init`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "scripts/00-prepare-source-instance.sh",
+        "scripts/01-configure-build-disk.sh",
+        "scripts/02-bootstrap-target-and-prepare-chroot.sh",
+        "scripts/03-remove-extraneous-packages.sh",
+        "scripts/04-configure-apt-sources.sh",
+        "scripts/05-install-updates.sh",
+        "scripts/06-remove-superseded-kernels.sh",
+        "scripts/07-bootloader.sh",
+        "scripts/08-create-fstab.sh",
+        "scripts/09-kernel-modules.sh",
+        "scripts/10-regenerate-initrd.sh",
+        "scripts/11-configure-locales.sh",
+        "scripts/12-disable-consistent-net-device-naming.sh",
+        "scripts/13-configure-network-interfaces.sh",
+        "scripts/14-ssh-hostkeys.sh",
+        "scripts/15-network-time-chrony.sh",
+        "scripts/16-network-time-systemd-timesyncd.sh",
+        "scripts/17-install-ec2-cloud-packages.sh",
+        "scripts/18-configure-ec2-cloud-packages.sh",
+        "scripts/19-create-admin-user.sh",
+        "scripts/20-root-account.sh",
+        "scripts/21-cleanup-target.sh",
+        "scripts/22-unmount-target-filesystems.sh"
+      ]
+    }
+  ]
+}
