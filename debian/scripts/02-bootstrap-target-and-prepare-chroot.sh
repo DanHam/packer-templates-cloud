@@ -32,16 +32,19 @@ fi
 
 
 # Set the additional packages to install with debootstrap
-packages="bash-completion,busybox,bzip2,ca-certificates,chrony,dbus,file," \
+packages="bash-completion,busybox,bzip2,ca-certificates,dbus,file," \
 packages+="grub-pc,irqbalance,libpam-systemd,less,locales,lsb-release," \
 packages+="manpages,man-db,net-tools,openssh-server,openssl,psmisc," \
-packages+="python-minimal,sudo,tree,uuid-runtime,xz-utils,"
+packages+="python3-minimal,sudo,tree,uuid-runtime,xz-utils,"
 # Set additional packages specific to the target version
 case "${DEBOOTSTRAP_CODENAME}" in
     "stretch")
-        packages+="linux-image-amd64"
+        packages+="chrony,linux-image-amd64"
         ;;
     "buster")
+        packages+="chrony,linux-image-cloud-amd64"
+        ;;
+    "bullseye")
         packages+="linux-image-cloud-amd64"
         ;;
     *)
