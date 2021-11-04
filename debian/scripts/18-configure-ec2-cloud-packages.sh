@@ -22,7 +22,7 @@ cloud_override="/etc/cloud/cloud.cfg.d/01_debian_cloud.cfg"
 if [ -e /etc/cloud/cloud.cfg.d/90_dpkg.cfg ]; then
     cloud_datasrc="/etc/cloud/cloud.cfg.d/90_dpkg.cfg"        # <= Debian 9
 else
-    cloud_datasrc="/etc/cloud/cloud.cfg.d/90_datasources.cfg" # Debian 10
+    cloud_datasrc="/etc/cloud/cloud.cfg.d/90_datasources.cfg" # >= Debian 10
 fi
 
 # By default the Debian cloud-init package disables collection of EC2
