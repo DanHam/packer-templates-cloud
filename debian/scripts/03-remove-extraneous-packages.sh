@@ -9,10 +9,31 @@ set -o errexit
 # Logging for packer
 echo "Removing extraneous packages installed by debootstrap..."
 
-# Set packages to remove
-packages="cgmanager libcgmanager0 libnih-dbus1 libnih1 systemd-shim"
+# List of unwanted packages
+list="cgmanager
+      libcgmanager0
+      libnih-dbus1
+      libnih1
+      systemd-shim"
 
-LANG=C.UTF-8 DEBIAN_FRONTEND="noninteractive" chroot /target \
-    apt-get --purge autoremove -y ${packages} >${redirect} 2>&1
+# Build a list of unwanted packages that are installed and remove
+packages=()
+for package in ${list}
+do
+    if chroot /target dpkg --status "${package}" &>/dev/null; then
+        echo "Found unwanted package: ${package}" > ${redirect}
+        packages+=("${package}")
+    fi
+done
+
+if [ ${#packages[@]} -gt 0 ]; then
+    echo "Removing the following packages:" > ${redirect}
+    echo "${packages[@]}" > ${redirect}
+
+    LANG=C.UTF-8 DEBIAN_FRONTEND="noninteractive" chroot /target \
+        apt-get --purge autoremove -y "${packages[@]}" > ${redirect} 2>&1
+else
+    echo "No unwanted packages found" > ${redirect}
+fi
 
 exit 0
