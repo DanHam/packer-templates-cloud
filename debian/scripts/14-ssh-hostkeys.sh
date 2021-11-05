@@ -30,7 +30,7 @@ rm -f /target/etc/ssh/ssh_host_*_key*
 if [ "$ENABLE_CLOUD_INIT" = true ]; then
     echo "Exiting: cloud-init is set to be installed and generate ssh keys" \
         > ${redirect}
-    exit 1
+    exit 0
 else
     echo "Creating systemd service to generate ssh host keys on next boot" \
         > ${redirect}
