@@ -17,3 +17,13 @@ output "aws_instance_debian10_dns" {
   description = "Debian 10 Instance DNS:"
   value       = aws_instance.debian10_test.public_dns
 }
+
+output "aws_instance_debian11_ip" {
+  description = "Debian 11 Instance IP:"
+  value       = aws_instance.debian11_test.public_ip
+}
+
+output "aws_instance_debian11_dns" {
+  description = "Debian 11 Instance DNS:"
+  value       = aws_instance.debian11_test.public_dns
+}

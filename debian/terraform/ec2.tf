@@ -128,3 +128,43 @@ resource "aws_instance" "debian10_test" {
     }
   )
 }
+
+# -----------------------------------------------------------------------------
+#
+# Instances: Debian 11
+#
+# -----------------------------------------------------------------------------
+
+data "aws_ami" "debian11_ami" {
+  most_recent = true
+  name_regex  = "Debian 11 Base HVM \\d{4}-\\d{2}-\\d{2}"
+  owners      = ["self"]
+}
+
+output "debian11_ami" {
+  description = "Discovered AMI:"
+  value       = "${data.aws_ami.debian11_ami.name}: ${data.aws_ami.debian11_ami.id}"
+}
+
+resource "aws_instance" "debian11_test" {
+  ami                    = data.aws_ami.debian11_ami.id
+  instance_type          = var.aws_instance_type
+  user_data              = filebase64(var.aws_instance_user_data_file)
+  vpc_security_group_ids = [aws_security_group.linux.id]
+
+  volume_tags = merge(
+    local.common_tags,
+    {
+      "BuiltBy" = "Packer"
+      "Name"    = "Terraform Test: ${data.aws_ami.debian11_ami.name}"
+    }
+  )
+
+  tags = merge(
+    local.common_tags,
+    {
+      "BuiltBy" = "Packer"
+      "Name"    = "Terraform Test: ${data.aws_ami.debian11_ami.name}"
+    }
+  )
+}
