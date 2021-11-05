@@ -1,3 +1,18 @@
+output "debian9_ami" {
+  description = "Discovered Debian 9 AMI:"
+  value       = "${data.aws_ami.debian9_ami.name}: ${data.aws_ami.debian9_ami.id}"
+}
+
+output "debian10_ami" {
+  description = "Discovered Debian 10 AMI:"
+  value       = "${data.aws_ami.debian10_ami.name}: ${data.aws_ami.debian10_ami.id}"
+}
+
+output "debian11_ami" {
+  description = "Discovered Debian 11 AMI:"
+  value       = "${data.aws_ami.debian11_ami.name}: ${data.aws_ami.debian11_ami.id}"
+}
+
 output "aws_instance_debian9_ip" {
   description = "Debian 9 Instance IP:"
   value       = aws_instance.debian9_test.public_ip

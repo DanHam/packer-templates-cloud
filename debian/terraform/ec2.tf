@@ -61,11 +61,6 @@ data "aws_ami" "debian9_ami" {
   owners      = ["self"]
 }
 
-output "debian9_ami" {
-  description = "Discovered AMI:"
-  value       = "${data.aws_ami.debian9_ami.name}: ${data.aws_ami.debian9_ami.id}"
-}
-
 resource "aws_instance" "debian9_test" {
   ami                    = data.aws_ami.debian9_ami.id
   instance_type          = var.aws_instance_type
@@ -101,11 +96,6 @@ data "aws_ami" "debian10_ami" {
   owners      = ["self"]
 }
 
-output "debian10_ami" {
-  description = "Discovered AMI:"
-  value       = "${data.aws_ami.debian10_ami.name}: ${data.aws_ami.debian10_ami.id}"
-}
-
 resource "aws_instance" "debian10_test" {
   ami                    = data.aws_ami.debian10_ami.id
   instance_type          = var.aws_instance_type
@@ -139,11 +129,6 @@ data "aws_ami" "debian11_ami" {
   most_recent = true
   name_regex  = "Debian 11 Base HVM \\d{4}-\\d{2}-\\d{2}"
   owners      = ["self"]
-}
-
-output "debian11_ami" {
-  description = "Discovered AMI:"
-  value       = "${data.aws_ami.debian11_ami.name}: ${data.aws_ami.debian11_ami.id}"
 }
 
 resource "aws_instance" "debian11_test" {
