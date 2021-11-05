@@ -19,7 +19,7 @@ echo "Creating sources.list file for Debian ${codename}" >${redirect}
 
 # The mirror defined in the Packer template and exported as environment
 # variables will be used in preference to the default below
-: ${APT_MIRROR:="http://httpredir.debian.org"}
+: "${APT_MIRROR:="http://httpredir.debian.org"}"
 
 # The component portion of the security stanza changed for bullseye
 case "${codename}" in

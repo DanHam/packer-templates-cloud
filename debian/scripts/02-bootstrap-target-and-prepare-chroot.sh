@@ -11,7 +11,7 @@ echo "Installing base packages into target filesystem..."
 
 # The Debian codename should be set in the Packer template and passed to
 # the script as an environment variable
-if [ "x${DEBOOTSTRAP_CODENAME}" = "x" ]; then
+if [ -z "${DEBOOTSTRAP_CODENAME}" ]; then
     echo "Error: debootstrap requires the Debian codename to be set via" \
         "the Packer template. Please set a value for debootstrap_codename"
     exit 1
@@ -58,7 +58,7 @@ echo "${packages}" >${redirect}
 
 echo "Bootstrapping Debian ${DEBOOTSTRAP_CODENAME^} into the build target" \
     "with debootstrap" >${redirect}
-debootstrap --include=${packages} ${DEBOOTSTRAP_CODENAME} /target \
+debootstrap --include=${packages} "${DEBOOTSTRAP_CODENAME}" /target \
     http://httpredir.debian.org/debian >$redirect 2>&1
 
 # Prepare the chroot environment

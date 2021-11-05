@@ -13,10 +13,10 @@ echo "Creating the fstab file..."
 target_root_uuid="$(lsblk --list --output NAME,TYPE,UUID,MOUNTPOINT | \
                     grep part | \
                     grep /target$ | \
-                    tr -s '[[:blank:]]' ' ' | \
+                    tr -s '[:blank:]' ' ' | \
                     cut -d' ' -f3)"
 
-if [ "x${target_root_uuid}" == "x" ]; then
+if [ -z "${target_root_uuid}" ]; then
     echo "ERROR: Failed to determine UUID for root device"
     exit 1
 fi
@@ -25,10 +25,10 @@ echo "Root UUID: ${target_root_uuid}" >${redirect}
 target_boot_uuid="$(lsblk --list --output NAME,TYPE,UUID,MOUNTPOINT | \
                     grep part | \
                     grep /target/boot$ | \
-                    tr -s '[[:blank:]]' ' ' | \
+                    tr -s '[:blank:]' ' ' | \
                     cut -d' ' -f3)"
 
-if [ "x${target_boot_uuid}" == "x" ]; then
+if [ -z "${target_boot_uuid}" ]; then
     echo "ERROR: Failed to determine UUID for boot device"
     exit 1
 fi

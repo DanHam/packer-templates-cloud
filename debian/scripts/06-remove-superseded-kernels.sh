@@ -20,14 +20,18 @@ echo -e "Currently installed kernel packages:\n${list}" >${redirect}
 latest="$(echo "${list}" | head -n1)"
 echo -e "Latest kernel:\n${latest}" >${redirect}
 
-superseded="$(echo "${list}" | tail --lines=+2 | tr -s '\n' ' ')"
+# Store old kernels into an array for removal
+bkifs="${IFS}"
+IFS=' ' read -r -a superseded <<< "$(echo "${list}" | tail --lines=+2 | \
+    tr -s '\n' ' ')"
+IFS="${bkifs}"
 
-if [ "x${superseded}" = "x" ]; then
-    echo "No superseded kernels to remove" >${redirect}
-else
-    echo -e "Removing superseded kernels:\n${superseded}" >${redirect}
+if [ "${#superseded[@]}" -gt 0 ]; then
+    echo "Removing superseded kernels: ${superseded[*]}" >${redirect}
     LANG=C.UTF-8 DEBIAN_FRONTEND="noninteractive" chroot /target \
-        apt-get --purge remove -y ${superseded} >${redirect} 2>&1
+        apt-get --purge remove -y "${superseded[@]}" >${redirect} 2>&1
+else
+    echo "No superseded kernels to remove" >${redirect}
 fi
 
 exit 0

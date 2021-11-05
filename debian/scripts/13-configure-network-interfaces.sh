@@ -13,6 +13,7 @@ set -o errexit
 echo "Creating the network interfaces file..."
 
 # Add default contents and set up loopback
+echo "Setting up loopback interface" > ${redirect}
 cat > /target/etc/network/interfaces <<EOF
 # interfaces(5) file used by ifup(8) and ifdown(8)
 #
@@ -26,9 +27,10 @@ EOF
 
 # Configure the number of interfaces defined in the Packer template or else
 # default to the number of interfaces defined below
-: ${NUM_IFACES:="1"}
-for i in $(seq 0 $((${NUM_IFACES}-1))) # Start at eth0...
+: "${NUM_IFACES:="1"}"
+for i in $(seq 0 $((NUM_IFACES-1))) # Start at eth0...
 do
+    echo "Setting up interface: eth${i}" > ${redirect}
 	printf "%s" "\
         #
         # Ethernet ${i}

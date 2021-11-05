@@ -25,28 +25,28 @@ echo "GECOS:     ${ADMIN_GECOS}"              > ${redirect}
 echo "SSH key:   ${ADMIN_SSH_AUTHORISED_KEY}" > ${redirect}
 
 # Create the required group
-chroot /target groupadd --gid ${ADMIN_GID} ${ADMIN_GROUP}
+chroot /target groupadd --gid "${ADMIN_GID}" "${ADMIN_GROUP}"
 
 # Create the user
-chroot /target useradd --create-home --uid ${ADMIN_UID} --gid ${ADMIN_GID} \
-                       --groups ${ADMIN_GROUPS} --shell ${ADMIN_SHELL} \
-                       --comment "${ADMIN_GECOS}" ${ADMIN_USER}
+chroot /target useradd --create-home --uid "${ADMIN_UID}" \
+    --gid "${ADMIN_GID}" --groups "${ADMIN_GROUPS}" \
+    --shell "${ADMIN_SHELL}" --comment "${ADMIN_GECOS}" "${ADMIN_USER}"
 
 # Configure authorised ssh keys
 ssh_dir="/home/${ADMIN_USER}/.ssh"
-[ -d /target/${ssh_dir} ] || mkdir /target/${ssh_dir}
-chmod 700 /target/${ssh_dir}
-echo ${ADMIN_SSH_AUTHORISED_KEY} > /target/${ssh_dir}/authorized_keys
-chmod 600 /target/${ssh_dir}/authorized_keys
+[ -d /target/"${ssh_dir}" ] || mkdir /target/"${ssh_dir}"
+chmod 700 /target/"${ssh_dir}"
+echo "${ADMIN_SSH_AUTHORISED_KEY}" > /target/"${ssh_dir}"/authorized_keys
+chmod 600 /target/"${ssh_dir}"/authorized_keys
 # Must use chroot here as Admin user and group may not exist on host
-chroot /target chown -R ${ADMIN_USER}:${ADMIN_GROUP} ${ssh_dir}
+chroot /target chown -R "${ADMIN_USER}":"${ADMIN_GROUP}" "${ssh_dir}"
 
 # Configure password-less sudo for the admin user
 sudoers_user="/target/etc/sudoers.d/admin-user"
-cat <<EOF > ${sudoers_user}
+cat <<EOF > "${sudoers_user}"
 # Allow admin user to run commands as root without providing a password
 ${ADMIN_USER}  ALL=(ALL)  NOPASSWD: ALL
 EOF
-chmod 0440 ${sudoers_user}
+chmod 0440 "${sudoers_user}"
 
 exit 0

@@ -26,22 +26,22 @@ fi
 rootdisk="$(lsblk --list --output PKNAME,TYPE,MOUNTPOINT | \
             grep part | \
             grep /$ | \
-            tr -s '[[:blank:]]' ' ' | \
+            tr -s '[:blank:]' ' ' | \
             cut -d' ' -f 1)"
 
 echo "Root filesystem for running system is on: ${rootdisk}" > ${redirect}
 
 # Determine and set the name for the build disk
 blddisk="$(lsblk --list --output TYPE,NAME | \
-             grep -v ${rootdisk} | \
+             grep -v "${rootdisk}" | \
              grep disk | \
-             tr -s '[[:blank:]]' ' ' | \
+             tr -s '[:blank:]' ' ' | \
              cut -d' ' -f2)"
 
 echo "Found device for chroot build: ${blddisk}" > ${redirect}
 
 # Ensure the build disk has no existing partitions
-if [ "x$(lsblk -l -o NAME,TYPE | grep ${blddisk} | grep part)" != "x" ]; then
+if [ "x$(lsblk -l -o NAME,TYPE | grep "${blddisk}" | grep part)" != "x" ]; then
     echo "ERROR: Build disk ${blddisk} has existing partitions. Exiting"
     exit 2
 fi
@@ -63,22 +63,22 @@ printf "%s" "\
               # Accept default last sector - end of disk
     w # Write the partition table and quit
     " | sed -e 's/^ *//g' -e 's/[ ]*#.*//g' | \
-        fdisk /dev/${blddisk} &>/dev/null
-fdisk -l /dev/${blddisk} > ${redirect}
+        fdisk /dev/"${blddisk}" &>/dev/null
+fdisk -l /dev/"${blddisk}" > ${redirect}
 
 # Create the build disk filesystems and partition labels
 echo "Creating filesystems within the build disk partitions..." > ${redirect}
 bootpart="/dev/${blddisk}1"
 rootpart="/dev/${blddisk}2"
-mkfs.ext4 -L "BOOT" ${bootpart} > ${redirect} 2>&1
-mkfs.ext4 -L "ROOT" ${rootpart} > ${redirect} 2>&1
+mkfs.ext4 -L "BOOT" "${bootpart}" > ${redirect} 2>&1
+mkfs.ext4 -L "ROOT" "${rootpart}" > ${redirect} 2>&1
 
 # Mount the build disk
 echo "Mounting build disk partitions under /target..." > ${redirect}
 [ ! -e /target ] && mkdir /target
-mount ${rootpart} /target
+mount "${rootpart}" /target
 mkdir /target/boot
-mount ${bootpart} /target/boot
-mount | grep ${blddisk} > ${redirect}
+mount "${bootpart}" /target/boot
+mount | grep "${blddisk}" > ${redirect}
 
 exit 0

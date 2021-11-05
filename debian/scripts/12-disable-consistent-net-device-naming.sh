@@ -23,7 +23,7 @@ grub="/etc/default/grub"
 karg="$(sed -n 's/^GRUB_CMDLINE_LINUX.*=".*\(net.ifnames=.*\).*"/\1/p' \
     /target/${grub})"
 
-if [ "x${karg}" == "x" ]; then
+if [ -z "${karg}" ]; then
     # The kernel arg to disable consistent net device naming is missing
     # from the grub config file and needs to be added. Add the arg to the
     # GRUB_CMDLINE_LINUX stanza in preference to GRUB_CMDLINE_LINUX_DEFAULT

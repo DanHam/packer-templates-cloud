@@ -21,11 +21,11 @@ sed -i -e 's/\(GRUB_TIMEOUT\)=.*/\1=0/g' \
 target_device="/dev/$(lsblk --list --output PKNAME,TYPE,MOUNTPOINT | \
                       grep part | \
                       grep /target$ | \
-                      tr -s '[[:blank:]]' ' ' | \
+                      tr -s '[:blank:]' ' ' | \
                       cut -d' ' -f1)"
 
 echo "Installing the bootloader to ${target_device}" >${redirect}
-chroot /target grub-install ${target_device} >${redirect} 2>&1
+chroot /target grub-install "${target_device}" >${redirect} 2>&1
 echo "Creating the grub configuration file" >${redirect}
 chroot /target grub-mkconfig -o /boot/grub/grub.cfg >${redirect} 2>&1
 

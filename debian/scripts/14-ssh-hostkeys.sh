@@ -27,11 +27,18 @@ rm -f /target/etc/ssh/ssh_host_*_key*
 # Exit if cloud-init is going to be installed. Otherwise copy the unit file
 # and associated script into place and ensure the service is set to start
 # on boot
-[ "$ENABLE_CLOUD_INIT" = true ] && exit 0
+if [ "$ENABLE_CLOUD_INIT" = true ]; then
+    echo "Exiting: cloud-init is set to be installed and generate ssh keys" \
+        > ${redirect}
+    exit 1
+else
+    echo "Creating systemd service to generate ssh host keys on next boot" \
+        > ${redirect}
+fi
 
-cp ${TARGET_FILES_DIR}/generate-ssh-host-keys.service \
+cp "${TARGET_FILES_DIR}"/generate-ssh-host-keys.service \
     /target/etc/systemd/system/
-cp ${TARGET_FILES_DIR}/generate-ssh-host-keys.sh /target/usr/local/sbin/
+cp "${TARGET_FILES_DIR}"/generate-ssh-host-keys.sh /target/usr/local/sbin/
 chmod +x /target/usr/local/sbin/generate-ssh-host-keys.sh
 chroot /target systemctl enable generate-ssh-host-keys.service
 

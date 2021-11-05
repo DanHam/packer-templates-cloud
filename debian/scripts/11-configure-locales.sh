@@ -24,7 +24,7 @@ fi
 
 # Locales defined in the Packer template and exported as environment
 # variables will be used in preference to the default below
-: ${LOCALES:="en_GB.UTF-8"}
+: "${LOCALES:="en_GB.UTF-8"}"
 
 # The locale.gen file lists locales that should be built. By default the
 # file contains a commented list of all locales. We need to uncomment the
